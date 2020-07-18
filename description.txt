@@ -1,0 +1,4 @@
+Discordpy bot for discord guilds.
+
+Bot name : {bot_name}.
+Guild count : {bot_guilds_count}.
