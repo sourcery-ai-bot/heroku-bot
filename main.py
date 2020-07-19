@@ -5,8 +5,7 @@ import json
 import os
 from random import randint
 
-# token = os.environ.get('BOT_TOKEN')
-token = "Njg4MTk4MDEwMzQxMDMxOTcx.XxOV2Q.Xg5CPFmD8DvTXblqkcAx-cKPx8U"
+token = os.environ.get('BOT_TOKEN')
 
 with open('config.json', 'r') as file:
     config = json.load(file)
