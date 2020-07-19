@@ -12,7 +12,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.client.user.name} brought online at {datetime.now()}.")
-        """
+
         @commands.Cog.listener()
         async def on_command_error(self, ctx, error):
             if isinstance(error, commands.CommandNotFound) or isinstance(error, commands.NoPrivateMessage):
@@ -28,9 +28,9 @@ class Events(commands.Cog):
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.MissingPermissions):
                 await ctx.send(f"You don't have permission to do that, {ctx.author.mention}!")
-            elif isinstance(error, commands.BadArgument) or isinstance(error, commands.MissingRequiredArgument):
+            elif isinstance(error, commands.BadArgument) or isinstance(error, commands.MissingRequiredArgument) and ctx.command not in ["kick", "ban"]:
                 await ctx.send(f"Please send `{self.client.command_prefix[0]}help {ctx.command.name}` to see how to use it correctly, {ctx.author.mention}.")
-        """
+
 
 def setup(client):
     client.add_cog(Events(client))

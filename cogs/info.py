@@ -7,6 +7,14 @@ from snowflake import to_datetime as to_dt
 
 from datetime import datetime
 
+async def get_user(bot, ctx, mention_or_id):
+    if mention_or_id.isdigit():
+        member = bot.get_user(int(mention_or_id))
+    else:
+        converter = MemberConverter()
+        member = await converter.convert(ctx, mention_or_id)
+    return member
+
 class Info(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -16,25 +24,25 @@ class Info(commands.Cog):
         """ Get bot latency. """
         embed = discord.Embed(
             title = 'Pong!',
-            description = f"Latency is {round(self.client.latency * 1000, 3)}ms.",
+            description = f"Latency is {round(self.client.latency * 2000, 3)}ms.",
             colour = random_color()
         )
 
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=['dox'])
     @commands.guild_only()
+    @commands.cooldown(rate=3, per=2, type=commands.BucketType.user)
     async def whois(self, ctx, mention_or_id=None):
+        """ Get a given user's info. """
         is_in_server = True
+        member = ctx.author
         if mention_or_id:
-            member = await self.get_user(ctx, mention_or_id)
+            member = await get_user(self.client, ctx, mention_or_id)
             if not member:
                 return await ctx.send(f"❌ User `{mention_or_id}` not found.")
 
             is_in_server = member.id in [user.id for user in ctx.guild.members]
-
-        else:
-            member = ctx.author
 
         creation = to_dt(member.id)
         date = datetime.now() - creation
@@ -55,14 +63,13 @@ class Info(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=['ava', 'av', 'pfp'])
     async def avatar(self, ctx, mention_or_id=None):
+        member = ctx.author
         if mention_or_id:
-            member = await self.get_user(ctx, mention_or_id)
+            member = await get_user(self.client, ctx, mention_or_id)
             if not member:
                 return await ctx.send(f"❌ User `{mention_or_id}` not found.")
-        else:
-            member = ctx.author
 
         embed = discord.Embed(
             title = f"Avatar for {member}",
@@ -94,15 +101,6 @@ class Info(commands.Cog):
 
         embed.set_footer(text=f"Prefix{'es' * (len(self.client.command_prefix) - 1)}: {', '.join([p.strip() for p in self.client.command_prefix])}")
         await ctx.send(embed=embed)
-
-    async def get_user(self, ctx, mention_or_id):
-        if mention_or_id.isdigit():
-            member = self.client.get_user(int(mention_or_id))
-        else:
-            converter = MemberConverter()
-            member = await converter.convert(ctx, mention_or_id)
-
-        return member
 
 
 def setup(client):

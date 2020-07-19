@@ -5,10 +5,11 @@ import json
 import os
 from random import randint
 
+# token = os.environ.get('BOT_TOKEN')
+token = "Njg4MTk4MDEwMzQxMDMxOTcx.XxOV2Q.Xg5CPFmD8DvTXblqkcAx-cKPx8U"
 
 with open('config.json', 'r') as file:
     config = json.load(file)
-    token = os.environ.get('BOT_TOKEN')
     managers = config["managers"]
     prefix = config["prefix"]
 
