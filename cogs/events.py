@@ -15,7 +15,9 @@ class Events(commands.Cog):
 
         @commands.Cog.listener()
         async def on_command_error(self, ctx, error):
-            if isinstance(error, commands.CommandNotFound) or isinstance(error, commands.NoPrivateMessage):
+            if isinstance(
+                error, (commands.CommandNotFound, commands.NoPrivateMessage)
+            ):
                 return
 
             if isinstance(error, commands.CommandOnCooldown):

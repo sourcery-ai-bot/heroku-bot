@@ -11,7 +11,7 @@ def to_unix(snowflake: int) -> int:
 
 
 def to_unix_ms(snowflake: int) -> int:
-    return (int(snowflake) >> 22) + epoch
+    return (snowflake >> 22) + epoch
 
 
 def snowflake_gt_14(snowflake: int) -> bool:

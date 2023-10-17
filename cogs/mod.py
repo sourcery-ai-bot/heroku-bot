@@ -78,10 +78,10 @@ class Moderation(commands.Cog):
 
         channel = ctx.channel
         await channel.delete_messages([ctx.message])
-        messages = await channel.history(limit=int(amount)).flatten()
+        messages = await channel.history(limit=amount).flatten()
 
         await channel.delete_messages(messages)
-        message = await ctx.send(f"{amount} message{'s' * bool(int(amount) - 1)} deleted.")
+        message = await ctx.send(f"{amount} message{'s' * bool(amount - 1)} deleted.")
         await aio.sleep(2)
         await channel.delete_messages([message])
 
@@ -112,7 +112,9 @@ class Moderation(commands.Cog):
     @kick.error
     @ban.error
     async def remove_member_handler(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument) or isinstance(error, commands.BadArgument):
+        if isinstance(
+            error, (commands.MissingRequiredArgument, commands.BadArgument)
+        ):
             return await ctx.send(f"You must pass in a valid member to {ctx.command} them, {ctx.author.mention}.")
 
 

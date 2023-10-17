@@ -9,11 +9,9 @@ from datetime import datetime
 
 async def get_user(bot, ctx, mention_or_id):
     if mention_or_id.isdigit():
-        member = bot.get_user(int(mention_or_id))
-    else:
-        converter = MemberConverter()
-        member = await converter.convert(ctx, mention_or_id)
-    return member
+        return bot.get_user(int(mention_or_id))
+    converter = MemberConverter()
+    return await converter.convert(ctx, mention_or_id)
 
 class Info(commands.Cog):
     def __init__(self, client):

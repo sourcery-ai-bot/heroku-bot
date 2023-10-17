@@ -119,9 +119,7 @@ class Levels(commands.Cog):
         if user.id == ctx.author.id:
             return
 
-        if xp < 1:
-            xp = 1
-
+        xp = max(xp, 1)
         self.add_xp(user, xp)
         await ctx.send(f"Gave {user.mention} {xp} point{'s' * bool(xp - 1)}!")
 
@@ -180,7 +178,7 @@ class Levels(commands.Cog):
         self.update_user(user, user_level)
 
     def update_config(self, setting: str, updated_setting: int):
-        self.config[setting] = int(updated_setting)
+        self.config[setting] = updated_setting
         dump_data(self.config, levels_config)
 
         print(f"Updated {setting} to {updated_setting}")
